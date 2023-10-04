@@ -22,7 +22,4 @@ interface WordDAO {
 
     @Query("SELECT * FROM entities WHERE id=:id")
     fun get(id: Long): Word?
-
-
-
 }
