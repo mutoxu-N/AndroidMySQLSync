@@ -1,12 +1,13 @@
 package com.github.mutoxu_n.mysqlsync
 
 import android.app.Application
+import android.content.Context
 
 class App: Application() {
     companion object {
-        private var _instance: App? = null
-        val instance: App?
-            get() { return _instance }
+        private lateinit var _instance: App
+        val applicationContext: Context
+            get() { return _instance.applicationContext }
 
 
     }
