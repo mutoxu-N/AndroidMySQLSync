@@ -14,6 +14,9 @@ class MainActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this)[MainActivityViewModel::class.java]
         binding = ActivityMainBinding.inflate(layoutInflater)
 
+        // get data from MySQL
+        binding.update.setOnClickListener { viewModel.getWordsFromRemote() }
+
         setContentView(binding.root)
     }
 }
