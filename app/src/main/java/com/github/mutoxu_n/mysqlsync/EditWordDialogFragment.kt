@@ -6,14 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
-import com.github.mutoxu_n.mysqlsync.databinding.FragmentAddWordDialogBinding
+import com.github.mutoxu_n.mysqlsync.databinding.FragmentEditWordDialogBinding
 
 class EditWordDialogFragment : DialogFragment() {
     private lateinit var viewModel: EditWordDialogViewModel
-    private lateinit var binding: FragmentAddWordDialogBinding
+    private lateinit var binding: FragmentEditWordDialogBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        binding = FragmentAddWordDialogBinding.inflate(inflater)
+        binding = FragmentEditWordDialogBinding.inflate(inflater)
 
         return binding.root
     }
