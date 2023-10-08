@@ -1,5 +1,6 @@
 package com.github.mutoxu_n.mysqlsync
 
+import android.util.Log
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
@@ -22,4 +23,7 @@ interface WordDAO {
 
     @Query("SELECT * FROM entities WHERE id=:id")
     fun get(id: Long): Word?
+
+    @Query("DELETE FROM entities WHERE id=:id")
+    fun deleteId(id: Long)
 }

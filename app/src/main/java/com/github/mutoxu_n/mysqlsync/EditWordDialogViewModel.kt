@@ -52,4 +52,13 @@ class EditWordDialogViewModel: ViewModel() {
         }
     }
 
+    fun delete() {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                val dao = Database.getDatabase().wordDAO()
+                dao.deleteId(id.value!!)
+            }
+        }
+    }
+
 }

@@ -23,6 +23,11 @@ class EditWordDialogFragment : DialogFragment() {
             dismiss()
         }
 
+        binding.delete.setOnClickListener {
+            viewModel.delete()
+            dismiss()
+        }
+
         return binding.root
     }
 
@@ -34,7 +39,10 @@ class EditWordDialogFragment : DialogFragment() {
         viewModel.en.observe(this) { binding.etEn.setText(it) }
 
         arguments?.let {args ->
-            viewModel.setId(args.getLong("id"))
+            val id = args.getLong("id")
+            if(id == 0L) binding.delete.isEnabled = false
+
+            viewModel.setId(id)
         }
 
     }
