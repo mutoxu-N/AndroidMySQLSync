@@ -22,7 +22,6 @@ class RemoteConfigureDialogFragment: DialogFragment() {
 
         private const val KEY_ADDRESS = "address"
         private const val KEY_PORT = "port"
-        private const val KEY_PREF = "config"
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -40,7 +39,7 @@ class RemoteConfigureDialogFragment: DialogFragment() {
         binding.done.setOnClickListener {
 
             Toast.makeText(context, "${viewModel.address.value}, ${viewModel.port.value}", Toast.LENGTH_SHORT).show()
-            val editor = App.applicationContext.getSharedPreferences(KEY_PREF, Context.MODE_PRIVATE).edit()
+            val editor = App.pref.edit()
             editor.putString(KEY_ADDRESS, viewModel.address.value)
             editor.putInt(KEY_PORT, viewModel.port.value!!)
             editor.apply()
@@ -55,8 +54,8 @@ class RemoteConfigureDialogFragment: DialogFragment() {
         viewModel = ViewModelProvider(this)[RemoteConfigureDialogViewModel::class.java]
 
         // SharedPreferences があれば読み込む
-        val pref = App.applicationContext.getSharedPreferences(KEY_PREF, Context.MODE_PRIVATE)
-        pref?.let {
+        val pref = App.pref
+        pref.let {
             binding.etAddress.setText(pref.getString(KEY_ADDRESS, "127.0.0.1")!!)
             binding.etPort.setText(pref.getInt(KEY_PORT, 443).toString())
         }
