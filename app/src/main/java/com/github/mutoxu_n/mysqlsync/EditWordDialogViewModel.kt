@@ -1,5 +1,6 @@
 package com.github.mutoxu_n.mysqlsync
 
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -26,11 +27,13 @@ class EditWordDialogViewModel: ViewModel() {
             viewModelScope.launch { withContext(Dispatchers.IO) {
                 val dao = Database.getDatabase().wordDAO()
                 val word = dao.get(id)
-                if(word == null) {
-                    _id.value = 0L
-                } else {
-                    _jp.value = word.jp
-                    _en.value = word.en
+                withContext(Dispatchers.Main) {
+                    if(word == null) {
+                        _id.value = 0L
+                    } else {
+                        _jp.value = word.jp
+                        _en.value = word.en
+                    }
                 }
             } }
         }
@@ -43,7 +46,8 @@ class EditWordDialogViewModel: ViewModel() {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 val dao = Database.getDatabase().wordDAO()
-                dao.insert(word)
+                if(word.id == 0L) dao.insert(word)
+                else dao.update(word)
             }
         }
     }

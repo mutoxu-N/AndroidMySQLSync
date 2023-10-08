@@ -27,9 +27,7 @@ class MainActivityViewModel: ViewModel() {
                 withContext(Dispatchers.Main) {
                     _words.value = new
                 }
-
             }
-
         }
     }
 }

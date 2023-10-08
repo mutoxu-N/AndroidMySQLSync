@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import com.github.mutoxu_n.mysqlsync.databinding.FragmentEditWordDialogBinding
@@ -28,9 +29,9 @@ class EditWordDialogFragment : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         viewModel = ViewModelProvider(this)[EditWordDialogViewModel::class.java]
 
-        viewModel.id.value?.let { binding.tvId.setText("ID: $it") }
-        viewModel.jp.value?.let { binding.etJp.setText(it) }
-        viewModel.en.value?.let { binding.etEn.setText(it) }
+        viewModel.id.observe(this) { binding.tvId.setText("ID: $it") }
+        viewModel.jp.observe(this) { binding.etJp.setText(it) }
+        viewModel.en.observe(this) { binding.etEn.setText(it) }
 
         arguments?.let {args ->
             viewModel.setId(args.getLong("id"))
