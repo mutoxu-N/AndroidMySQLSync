@@ -16,11 +16,12 @@
 
     <EditText
         android:id="@+id/etAddress"
-        android:layout_width="200dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="20dp"
 
         app:layout_constraintStart_toStartOf="@id/glEditText"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBaseline_toBaselineOf="@id/tvAddress"
 
         android:selectAllOnFocus="true"
@@ -38,11 +39,12 @@
 
     <EditText
         android:id="@+id/etPort"
-        android:layout_width="200dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="20dp"
 
         app:layout_constraintStart_toStartOf="@id/glEditText"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBaseline_toBaselineOf="@id/tvPort"
 
         android:selectAllOnFocus="true"

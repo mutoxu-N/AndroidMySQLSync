@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import android.view.ViewGroup.LayoutParams
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import com.github.mutoxu_n.mysqlsync.databinding.FragmentEditWordDialogBinding
@@ -12,6 +12,14 @@ import com.github.mutoxu_n.mysqlsync.databinding.FragmentEditWordDialogBinding
 class EditWordDialogFragment : DialogFragment() {
     private lateinit var viewModel: EditWordDialogViewModel
     private lateinit var binding: FragmentEditWordDialogBinding
+
+    override fun onStart() {
+        super.onStart()
+        dialog?.window?.setLayout(
+            (resources.displayMetrics.widthPixels * 0.8).toInt(),
+            LayoutParams.WRAP_CONTENT
+        )
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentEditWordDialogBinding.inflate(inflater)

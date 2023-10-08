@@ -11,6 +11,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import com.github.mutoxu_n.mysqlsync.databinding.FragmentRemoteConfigureDialogBinding
 
+import android.view.ViewGroup.LayoutParams
 class RemoteConfigureDialogFragment: DialogFragment() {
     private lateinit var binding: FragmentRemoteConfigureDialogBinding
     private lateinit var viewModel: RemoteConfigureDialogViewModel
@@ -22,6 +23,14 @@ class RemoteConfigureDialogFragment: DialogFragment() {
 
         private const val KEY_ADDRESS = "address"
         private const val KEY_PORT = "port"
+    }
+
+    override fun onStart() {
+        super.onStart()
+        dialog?.window?.setLayout(
+            (resources.displayMetrics.widthPixels * 0.8).toInt(),
+            LayoutParams.WRAP_CONTENT,
+        )
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
