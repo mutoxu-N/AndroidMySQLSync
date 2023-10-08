@@ -6,7 +6,7 @@ plugins {
 
 android {
     namespace = "com.github.mutoxu_n.mysqlsync"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.github.mutoxu_n.mysqlsync"

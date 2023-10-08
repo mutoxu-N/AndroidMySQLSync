@@ -17,6 +17,11 @@ class MainActivity : AppCompatActivity() {
         // get data from MySQL
         binding.update.setOnClickListener { viewModel.getWordsFromRemote() }
 
+        binding.config.setOnClickListener {
+            val dialog = RemoteConfigureDialogFragment.newInstance()
+            dialog.show(supportFragmentManager, "RemoteConfigureDialog")
+        }
+
         setContentView(binding.root)
     }
 }
