@@ -2,11 +2,15 @@ package com.github.mutoxu_n.mysqlsync
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.mutoxu_n.mysqlsync.databinding.ActivityMainBinding
 
@@ -19,7 +23,7 @@ class MainActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this)[MainActivityViewModel::class.java]
         binding = ActivityMainBinding.inflate(layoutInflater)
 
-        // get data from MySQL
+        // buttons
         binding.add.setOnClickListener {
             val dialog = EditWordDialogFragment.newInstance()
             dialog.show(supportFragmentManager, "AddWordDialog")
@@ -30,10 +34,14 @@ class MainActivity : AppCompatActivity() {
             dialog.show(supportFragmentManager, "RemoteConfigureDialog")
         }
 
-        // words changed
-        viewModel.words.observe(this) {it?.let {
+        // recycler view settings
+        val layout = LinearLayoutManager(this@MainActivity)
+        binding.list.layoutManager = layout
+        binding.list.addItemDecoration(DividerItemDecoration(this@MainActivity, layout.orientation))
+        viewModel.words.observe(this) {it?.let { // words changed
             binding.list.adapter = ViewAdapter(it)
         } }
+        viewModel.updateWords()
 
         setContentView(binding.root)
     }

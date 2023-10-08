@@ -1,5 +1,6 @@
 package com.github.mutoxu_n.mysqlsync
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -21,8 +22,14 @@ class MainActivityViewModel: ViewModel() {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 val wordDAO = Database.getDatabase().wordDAO()
-                _words.value = wordDAO.getAll()
+                var new: List<Word> = listOf()
+                new = wordDAO.getAll()
+                withContext(Dispatchers.Main) {
+                    _words.value = new
+                }
+
             }
+
         }
     }
 }
