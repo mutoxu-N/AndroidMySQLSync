@@ -1,14 +1,116 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".EditWordDialogFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:id="@+id/tvId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
 
-</FrameLayout>
+        app:layout_constraintStart_toStartOf="@id/glTextView"
+        app:layout_constraintTop_toTopOf="@id/glId"
+
+        android:text="ID: 0" />
+
+
+    <TextView
+        android:id="@+id/tvJp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintStart_toStartOf="@id/glTextView"
+        app:layout_constraintTop_toTopOf="@id/glJp"
+
+        android:text="Japanese" />
+
+    <EditText
+        android:id="@+id/etJp"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintStart_toStartOf="@id/glEditText"
+        app:layout_constraintBaseline_toBaselineOf="@id/tvJp"
+
+        android:inputType="text" />
+
+    <TextView
+        android:id="@+id/tvEn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintStart_toStartOf="@id/glTextView"
+        app:layout_constraintTop_toTopOf="@id/glEn"
+
+        android:text="English" />
+
+    <EditText
+        android:id="@+id/etEn"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintStart_toStartOf="@id/glEditText"
+        app:layout_constraintBaseline_toBaselineOf="@id/tvEn"
+
+        android:inputType="text" />
+
+    <Button
+        android:id="@+id/done"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/glDone"
+
+        android:text="Done" />
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/glTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="20dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/glEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="100dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/glId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="20dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/glJp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="70dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/glEn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="120dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/glDone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="170dp" />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
