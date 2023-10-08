@@ -20,8 +20,11 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
 
         // get data from MySQL
-        binding.update.setOnClickListener { viewModel.getWordsFromRemote() }
-
+        binding.add.setOnClickListener {
+            val dialog = EditWordDialogFragment.newInstance()
+            dialog.show(supportFragmentManager, "AddWordDialog")
+        }
+        binding.update.setOnClickListener { viewModel.updateWords() }
         binding.config.setOnClickListener {
             val dialog = RemoteConfigureDialogFragment.newInstance()
             dialog.show(supportFragmentManager, "RemoteConfigureDialog")

@@ -19,6 +19,7 @@ class EditWordDialogFragment : DialogFragment() {
             viewModel.setJp(binding.etJp.text.toString())
             viewModel.setEn(binding.etEn.text.toString())
             viewModel.save()
+            dismiss()
         }
 
         return binding.root
