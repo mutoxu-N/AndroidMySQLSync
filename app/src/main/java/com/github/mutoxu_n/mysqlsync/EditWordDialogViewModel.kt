@@ -24,8 +24,7 @@ class EditWordDialogViewModel: ViewModel() {
         if(id != 0L) {
             // Roomからデータ取得
             viewModelScope.launch { withContext(Dispatchers.IO) {
-                val wordDAO = Database.getDatabase().wordDAO()
-                val word = wordDAO.get(id)
+                val word = RoomAccess.get(id)
                 withContext(Dispatchers.Main) {
                     if(word == null) {
                         _id.value = 0L
@@ -44,9 +43,8 @@ class EditWordDialogViewModel: ViewModel() {
         val word = Word(id.value!!, jp.value!!, en.value!!)
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                val wordDAO = Database.getDatabase().wordDAO()
-                if(word.id == 0L) wordDAO.insert(word)
-                else wordDAO.update(word)
+                if(word.id == 0L) RoomAccess.insert(word)
+                else RoomAccess.update(word)
             }
         }
     }
@@ -54,8 +52,7 @@ class EditWordDialogViewModel: ViewModel() {
     fun delete() {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                val wordDAO = Database.getDatabase().wordDAO()
-                wordDAO.deleteId(id.value!!)
+                RoomAccess.deleteId(id.value!!)
             }
         }
     }
