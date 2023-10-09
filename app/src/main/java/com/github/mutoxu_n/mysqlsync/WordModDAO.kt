@@ -14,4 +14,7 @@ interface WordModDAO {
 
     @Query("DELETE FROM WordMods")
     fun deleteAll()
+
+    @Query("SELECT count(*) FROM WordMods")
+    fun size(): Long
 }

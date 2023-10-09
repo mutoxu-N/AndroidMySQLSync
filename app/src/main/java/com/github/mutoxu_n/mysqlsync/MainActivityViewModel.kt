@@ -21,9 +21,8 @@ class MainActivityViewModel: ViewModel() {
     fun updateWords() {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                val wordDAO = Database.getDatabase().wordDAO()
                 var new: List<Word> = listOf()
-                new = wordDAO.getAll()
+                new = RoomAccess.getAll()
                 withContext(Dispatchers.Main) {
                     _words.value = new
                 }

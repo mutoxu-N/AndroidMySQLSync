@@ -17,6 +17,11 @@ class RoomAccess {
             return wordDao.get(id)
         }
 
+        fun getAll(): List<Word> {
+            val wordDao = Database.getDatabase().wordDAO()
+            return wordDao.getAll()
+        }
+
         fun deleteId(id: Long) {
             val wordDao = Database.getDatabase().wordDAO()
             wordDao.deleteId(id)
