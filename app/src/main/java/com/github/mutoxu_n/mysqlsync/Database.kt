@@ -4,10 +4,12 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 
 @androidx.room.Database(entities = [
-    Word::class
+    Word::class,
+    WordMod::class
 ], version = 1, exportSchema = false)
 abstract class Database: RoomDatabase() {
     abstract fun wordDAO(): WordDAO
+    abstract fun wordModDAO(): WordModDAO
 
     companion object {
         @Volatile

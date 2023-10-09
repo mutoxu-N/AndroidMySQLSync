@@ -9,4 +9,6 @@ data class Word(
     @PrimaryKey(autoGenerate = true) val id: Long,
     @ColumnInfo(name = "jp") val jp: String,
     @ColumnInfo(name = "en") val en: String
-)
+) {
+    fun toWordMod(type: String) = WordMod(0, id, jp, en, type)
+}
