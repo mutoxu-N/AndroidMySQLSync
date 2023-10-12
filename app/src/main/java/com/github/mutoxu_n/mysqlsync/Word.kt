@@ -11,4 +11,5 @@ data class Word(
     @ColumnInfo(name = "en") val en: String
 ) {
     fun toWordMod(type: String) = WordMod(0, id, jp, en, type)
+    fun changeId(newId: Long) = Word(newId, jp, en)
 }

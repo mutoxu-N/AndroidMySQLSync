@@ -13,9 +13,11 @@ data class WordMod(
     @ColumnInfo(name = "type") val type: String
 ) {
     companion object {
-        const val TYPE_ADD = "ADD"
+        const val TYPE_INSERT = "INSERT"
         const val TYPE_UPDATE = "UPDATE"
         const val TYPE_DELETE = "DELETE"
+
+        fun fromWord(word: Word, type: String) = WordMod(0, word.id, word.jp, word.en, type)
     }
 
     fun toWord(): Word = Word(id, jp, en)
