@@ -6,8 +6,7 @@ class RoomAccess {
             val wordDAO = Database.getDatabase().wordDAO()
             val wordModDAO = Database.getDatabase().wordModDAO()
             val inserted = wordDAO.insert(word)
-            word.changeId(inserted)
-            wordModDAO.insert(WordMod.fromWord(word, WordMod.TYPE_INSERT))
+            wordModDAO.insert(WordMod.fromWord(word.changeId(inserted), WordMod.TYPE_INSERT))
         }
 
         fun update(word: Word) {
