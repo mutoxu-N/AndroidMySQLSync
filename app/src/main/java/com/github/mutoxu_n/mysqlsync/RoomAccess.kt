@@ -38,5 +38,11 @@ class RoomAccess {
             val word = wordDAO.get(id)
             word?.let { delete(it) }
         }
+
+        fun syncMySQL(words: List<Word>) {
+            val wordDAO = Database.getDatabase().wordDAO()
+            wordDAO.deleteAll()
+            wordDAO.insertAll(words)
+        }
     }
 }

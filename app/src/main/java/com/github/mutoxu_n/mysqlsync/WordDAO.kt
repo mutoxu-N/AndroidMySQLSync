@@ -12,6 +12,9 @@ interface WordDAO {
     @Insert
     fun insert(word: Word): Long
 
+    @Insert
+    fun insertAll(words: List<Word>): Long
+
     @Update
     fun update(word: Word)
 
@@ -26,4 +29,7 @@ interface WordDAO {
 
     @Query("DELETE FROM entities WHERE id=:id")
     fun deleteId(id: Long)
+
+    @Query("DELETE FROM entities")
+    fun deleteAll()
 }

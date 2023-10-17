@@ -7,6 +7,9 @@ import android.content.SharedPreferences
 
 class App: Application() {
     companion object {
+        const val KEY_ADDRESS = "address"
+        const val KEY_PORT = "port"
+
         private lateinit var _instance: App
         val applicationContext: Context
             get() = _instance.applicationContext

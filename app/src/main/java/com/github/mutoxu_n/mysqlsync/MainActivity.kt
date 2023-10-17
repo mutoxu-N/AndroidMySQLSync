@@ -1,5 +1,7 @@
 package com.github.mutoxu_n.mysqlsync
 
+import android.Manifest
+import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -9,11 +11,18 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.mutoxu_n.mysqlsync.databinding.ActivityMainBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.lang.Exception
 
 class MainActivity : AppCompatActivity() {
     private lateinit var viewModel: MainActivityViewModel
@@ -29,7 +38,18 @@ class MainActivity : AppCompatActivity() {
             val dialog = EditWordDialogFragment.newInstance()
             dialog.show(supportFragmentManager, "AddWordDialog")
         }
-        binding.update.setOnClickListener { viewModel.updateWords() }
+        binding.update.setOnClickListener {
+//            viewModel.updateWords()
+                lifecycleScope.launch {
+                    withContext(Dispatchers.IO) {
+                        try {
+                            APIAccess.getAll()
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                    }
+                }
+        }
         binding.config.setOnClickListener {
             val dialog = RemoteConfigureDialogFragment.newInstance()
             dialog.show(supportFragmentManager, "RemoteConfigureDialog")
