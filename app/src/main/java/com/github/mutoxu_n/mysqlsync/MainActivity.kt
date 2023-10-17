@@ -39,11 +39,12 @@ class MainActivity : AppCompatActivity() {
             dialog.show(supportFragmentManager, "AddWordDialog")
         }
         binding.update.setOnClickListener {
-//            viewModel.updateWords()
                 lifecycleScope.launch {
                     withContext(Dispatchers.IO) {
                         try {
-                            APIAccess.getAll()
+//                            APIAccess.getAll()
+//                            withContext(Dispatchers.Main) { viewModel.updateWords() }
+                            Log.i("MainActivity", "version: ${APIAccess.getVersion()}")
                         } catch (e: Exception) {
                             e.printStackTrace()
                         }

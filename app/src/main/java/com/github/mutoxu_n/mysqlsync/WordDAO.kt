@@ -13,7 +13,7 @@ interface WordDAO {
     fun insert(word: Word): Long
 
     @Insert
-    fun insertAll(words: List<Word>): Long
+    fun insertAll(words: List<Word>): List<Long>
 
     @Update
     fun update(word: Word)

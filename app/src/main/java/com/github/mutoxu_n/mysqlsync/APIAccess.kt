@@ -13,12 +13,12 @@ class APIAccess {
         private lateinit var url: URL
         private var port: Int = 80
         private lateinit var con: HttpURLConnection
-        private fun createConnection() {
+        private fun createConnection(method: String = "GET") {
             // コネクション確立
             con = url.openConnection() as HttpURLConnection
             con.connectTimeout = 3_000
             con.readTimeout = 3_000
-            con.requestMethod = "GET"
+            con.requestMethod = method
             con.connect()
         }
 
@@ -26,6 +26,28 @@ class APIAccess {
             // ポート更新
             port = App.pref.getInt(App.KEY_PORT, 80)
             return URL("http://${App.pref.getString(App.KEY_ADDRESS, "127.0.0.1")}:$port$path")
+        }
+
+        fun getVersion(): Long {
+            try {
+                url = createURL("/get/version")
+                createConnection()
+
+                val str = con.inputStream.bufferedReader(Charsets.UTF_8).use {br ->
+                    br.readLines().joinToString("")
+                }
+
+                try {
+                    val json = JSONObject(str)
+                    val ver = json.getLong("version")
+                    return ver
+                } catch (e: Exception) { e.printStackTrace() }
+
+            } catch (e: Exception) {
+                Log.e("APIAccess.kt", "APIサーバーへのアクセスに失敗しました")
+                e.printStackTrace()
+            }
+            return -1L
         }
 
         fun getAll() {
@@ -53,6 +75,7 @@ class APIAccess {
                     }
 
                     RoomAccess.syncMySQL(wordList)
+                    con.disconnect()
 
                 } catch (e: Exception) {
                     e.printStackTrace()
