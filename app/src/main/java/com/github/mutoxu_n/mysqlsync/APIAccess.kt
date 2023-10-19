@@ -31,7 +31,7 @@ class APIAccess {
                 con.requestMethod = "GET"
                 con.connect()
 
-                // 接続先で処理に以上があったら終了
+                // 接続先で処理に異常があったら終了
                 if(con.responseCode != HttpURLConnection.HTTP_OK) {
                     Log.e("APIAccess.kt modify()", "レスポンスコード: ${con.responseCode}")
                     return -1L
@@ -65,7 +65,7 @@ class APIAccess {
                 con.requestMethod = "GET"
                 con.connect()
 
-                // 接続先で処理に以上があったら終了
+                // 接続先で処理に異常があったら終了
                 if(con.responseCode != HttpURLConnection.HTTP_OK) {
                     Log.e("APIAccess.kt modify()", "レスポンスコード: ${con.responseCode}")
                     return
@@ -106,6 +106,11 @@ class APIAccess {
 
         fun modify() {
             val wordMods = RoomAccess.getModifies()
+            if(wordMods.isEmpty()) {
+                // 更新が無かったらデータの送信を行わない
+                return
+            }
+
             val array = JSONArray()
             for(wordMod in wordMods) {
                 val elem = JSONObject()
@@ -135,7 +140,7 @@ class APIAccess {
                 oStream.flush()
                 oStream.close()
 
-                // 接続先で処理に以上があったら終了
+                // 接続先で処理に異常があったら終了
                 if(con.responseCode != HttpURLConnection.HTTP_OK) {
                     Log.e("APIAccess.kt", API_FAILED)
                     return
