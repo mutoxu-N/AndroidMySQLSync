@@ -2,18 +2,28 @@ package com.github.mutoxu_n.mysqlsync
 
 class RoomAccess {
     companion object {
+        private fun wordModDAOInsert(wordMod: WordMod) {
+            val wordModDAO = Database.getDatabase().wordModDAO()
+            val n = wordModDAO.size()
+            if(n == 0L) {
+                // WordModが存在するならRoomID+1
+                val editor = App.pref.edit()
+                editor.putLong(App.KEY_VERSION, App.pref.getLong(App.KEY_VERSION, 0L)+1)
+                editor.apply()
+            }
+            wordModDAO.insert(wordMod)
+        }
+
         fun insert(word: Word) {
             val wordDAO = Database.getDatabase().wordDAO()
-            val wordModDAO = Database.getDatabase().wordModDAO()
             val inserted = wordDAO.insert(word)
-            wordModDAO.insert(WordMod.fromWord(word.changeId(inserted), WordMod.TYPE_INSERT))
+            wordModDAOInsert(WordMod.fromWord(word.changeId(inserted), WordMod.TYPE_INSERT))
         }
 
         fun update(word: Word) {
             val wordDAO = Database.getDatabase().wordDAO()
-            val wordModDAO = Database.getDatabase().wordModDAO()
             wordDAO.update(word)
-            wordModDAO.insert(WordMod.fromWord(word, WordMod.TYPE_UPDATE))
+            wordModDAOInsert(WordMod.fromWord(word, WordMod.TYPE_UPDATE))
         }
 
         fun get(id: Long): Word? {
@@ -28,9 +38,8 @@ class RoomAccess {
 
         private fun delete(word: Word) {
             val wordDAO = Database.getDatabase().wordDAO()
-            val wordModDAO = Database.getDatabase().wordModDAO()
             wordDAO.deleteId(word.id)
-            wordModDAO.insert(WordMod.fromWord(word, WordMod.TYPE_DELETE))
+            wordModDAOInsert(WordMod.fromWord(word, WordMod.TYPE_DELETE))
         }
 
         fun deleteId(id: Long) {
@@ -39,7 +48,7 @@ class RoomAccess {
             word?.let { delete(it) }
         }
 
-        fun syncMySQL(words: List<Word>) {
+        fun syncFromAPI(words: List<Word>) {
             val wordDAO = Database.getDatabase().wordDAO()
             wordDAO.deleteAll()
             wordDAO.insertAll(words)

@@ -1,8 +1,6 @@
 package com.github.mutoxu_n.mysqlsync
 
 import android.util.Log
-import androidx.lifecycle.ViewModelProvider
-import org.json.JSONArray
 import org.json.JSONObject
 import java.lang.Exception
 import java.net.HttpURLConnection
@@ -39,9 +37,10 @@ class APIAccess {
 
                 try {
                     val json = JSONObject(str)
-                    val ver = json.getLong("version")
-                    return ver
-                } catch (e: Exception) { e.printStackTrace() }
+                    return json.getLong("version")
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
 
             } catch (e: Exception) {
                 Log.e("APIAccess.kt", "APIサーバーへのアクセスに失敗しました")
@@ -74,7 +73,7 @@ class APIAccess {
                         wordList.add(word)
                     }
 
-                    RoomAccess.syncMySQL(wordList)
+                    RoomAccess.syncFromAPI(wordList)
                     con.disconnect()
 
                 } catch (e: Exception) {

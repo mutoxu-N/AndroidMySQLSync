@@ -9,6 +9,7 @@ class App: Application() {
     companion object {
         const val KEY_ADDRESS = "address"
         const val KEY_PORT = "port"
+        const val KEY_VERSION = "version"
 
         private lateinit var _instance: App
         val applicationContext: Context
