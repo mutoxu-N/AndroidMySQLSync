@@ -88,6 +88,11 @@ class APIAccess {
                         wordList.add(word)
                     }
 
+                    // version を更新
+                    val editor = App.pref.edit()
+                    editor.putLong(App.KEY_VERSION, json.getLong("version"))
+                    editor.apply()
+
                     RoomAccess.syncFromAPI(wordList)
                     con.disconnect()
 

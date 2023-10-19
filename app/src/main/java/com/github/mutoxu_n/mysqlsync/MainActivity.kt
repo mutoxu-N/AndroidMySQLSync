@@ -42,13 +42,21 @@ class MainActivity : AppCompatActivity() {
                 lifecycleScope.launch {
                     withContext(Dispatchers.IO) {
                         try {
-//                            APIAccess.getAll()
-//                            withContext(Dispatchers.Main) { viewModel.updateWords() }
                             APIAccess.modify()
+                            APIAccess.getAll()
+                            withContext(Dispatchers.Main) { viewModel.updateWords() }
 
                         } catch (e: Exception) { e.printStackTrace() }
                     }
                 }
+        }
+        binding.update.setOnLongClickListener {
+            lifecycleScope.launch {
+                withContext(Dispatchers.IO) {
+                    APIAccess.modify()
+                }
+            }
+            true
         }
         binding.config.setOnClickListener {
             val dialog = RemoteConfigureDialogFragment.newInstance()
