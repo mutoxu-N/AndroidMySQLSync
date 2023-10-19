@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity() {
                         try {
 //                            APIAccess.getAll()
 //                            withContext(Dispatchers.Main) { viewModel.updateWords() }
-                            Log.i("MainActivity", "version: ${APIAccess.getVersion()}")
+                            APIAccess.modify()
 
                         } catch (e: Exception) { e.printStackTrace() }
                     }

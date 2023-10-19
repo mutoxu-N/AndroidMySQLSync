@@ -36,6 +36,11 @@ class RoomAccess {
             return wordDAO.getAll()
         }
 
+        fun getModifies(): List<WordMod> {
+            val wordModDAO = Database.getDatabase().wordModDAO()
+            return wordModDAO.getAll()
+        }
+
         private fun delete(word: Word) {
             val wordDAO = Database.getDatabase().wordDAO()
             wordDAO.deleteId(word.id)
@@ -46,6 +51,11 @@ class RoomAccess {
             val wordDAO = Database.getDatabase().wordDAO()
             val word = wordDAO.get(id)
             word?.let { delete(it) }
+        }
+
+        fun deleteWordMods() {
+            val wordModDAO = Database.getDatabase().wordModDAO()
+            wordModDAO.deleteAll()
         }
 
         fun syncFromAPI(words: List<Word>) {
