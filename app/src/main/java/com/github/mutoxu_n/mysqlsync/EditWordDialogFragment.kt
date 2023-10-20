@@ -10,6 +10,10 @@ import androidx.lifecycle.ViewModelProvider
 import com.github.mutoxu_n.mysqlsync.databinding.FragmentEditWordDialogBinding
 
 class EditWordDialogFragment : DialogFragment() {
+    interface EditDialogInterface {
+        fun onWordEdited()
+    }
+
     private lateinit var viewModel: EditWordDialogViewModel
     private lateinit var binding: FragmentEditWordDialogBinding
 
@@ -53,6 +57,15 @@ class EditWordDialogFragment : DialogFragment() {
             viewModel.setId(id)
         }
 
+    }
+
+    override fun onDestroy() {
+        var parent: EditDialogInterface? = null
+        if(activity is EditDialogInterface) parent = activity as EditDialogInterface
+        else if(parentFragment is EditDialogInterface) parent = parentFragment as EditDialogInterface
+
+        parent?.let { it.onWordEdited() }
+        super.onDestroy()
     }
 
     companion object {

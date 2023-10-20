@@ -1,18 +1,11 @@
 package com.github.mutoxu_n.mysqlsync
 
-import android.Manifest
-import android.content.pm.PackageManager
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -22,9 +15,8 @@ import com.github.mutoxu_n.mysqlsync.databinding.ActivityMainBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.lang.Exception
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), EditWordDialogFragment.EditDialogInterface {
     private lateinit var viewModel: MainActivityViewModel
     private lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -105,5 +97,10 @@ class MainActivity : AppCompatActivity() {
         override fun getItemCount(): Int {
             return words.size
         }
+    }
+
+    override fun onWordEdited() {
+        // 単語が編集されたらRecyclerViewを更新
+        viewModel.updateWords()
     }
 }
