@@ -14,10 +14,6 @@ class MainActivityViewModel: ViewModel() {
     val words: LiveData<List<Word>>
         get() = _words
 
-    fun getWordsFromRemote() {
-        // TODO: FastAPIから受信する 
-    }
-
     fun updateWords() {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
@@ -28,5 +24,12 @@ class MainActivityViewModel: ViewModel() {
                 }
             }
         }
+    }
+
+    private var _isOnline = false
+    val isOnline get() = _isOnline
+
+    fun setIsOnline(value: Boolean) {
+        _isOnline = value
     }
 }

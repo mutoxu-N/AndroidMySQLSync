@@ -41,6 +41,11 @@ class RoomAccess {
             return wordModDAO.getAll()
         }
 
+        fun getModifiesSize(): Long {
+            val wordModDAO = Database.getDatabase().wordModDAO()
+            return wordModDAO.size()
+        }
+
         private fun delete(word: Word) {
             val wordDAO = Database.getDatabase().wordDAO()
             wordDAO.deleteId(word.id)

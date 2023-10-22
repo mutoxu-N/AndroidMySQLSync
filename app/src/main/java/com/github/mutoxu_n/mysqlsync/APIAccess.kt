@@ -54,7 +54,7 @@ class APIAccess {
             return -1L
         }
 
-        fun getAll() {
+        fun getAll(): Boolean {
             // API から Wordデータを取得してRoomに反映する
             try {
                 reloadPreference()
@@ -68,7 +68,7 @@ class APIAccess {
                 // 接続先で処理に異常があったら終了
                 if(con.responseCode != HttpURLConnection.HTTP_OK) {
                     Log.e("APIAccess.kt modify()", "レスポンスコード: ${con.responseCode}")
-                    return
+                    return false
                 }
                 val str = con.inputStream.bufferedReader(Charsets.UTF_8).use {br ->
                     br.readLines().joinToString("")
@@ -101,14 +101,16 @@ class APIAccess {
             } catch (e: Exception) {
                 Log.e("APIAccess.kt", API_FAILED)
                 e.printStackTrace()
+                return false
             }
+            return true
         }
 
-        fun modify() {
+        fun modify(): Boolean {
             val wordMods = RoomAccess.getModifies()
             if(wordMods.isEmpty()) {
                 // 更新が無かったらデータの送信を行わない
-                return
+                return true
             }
 
             val array = JSONArray()
@@ -143,7 +145,7 @@ class APIAccess {
                 // 接続先で処理に異常があったら終了
                 if(con.responseCode != HttpURLConnection.HTTP_OK) {
                     Log.e("APIAccess.kt", API_FAILED)
-                    return
+                    return false
                 }
 
                 // WordMod を全削除
@@ -158,7 +160,9 @@ class APIAccess {
             } catch (e: Exception) {
                 Log.e("APIAccess.kt", "APIサーバーへのアクセスに失敗しました")
                 e.printStackTrace()
+                return false
             }
+            return true
 
         }
     }

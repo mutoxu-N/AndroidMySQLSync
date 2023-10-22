@@ -19,7 +19,7 @@ abstract class Database: RoomDatabase() {
             return INSTANCE ?: synchronized(this) {
                 // インスタンスが無かったら生成して返す
                 val instance = Room.databaseBuilder(
-                    App.applicationContext!!,
+                    App.applicationContext,
                     Database::class.java,
                     "secretaryDB"
                 ).build()

@@ -1,18 +1,23 @@
 package com.github.mutoxu_n.mysqlsync
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.mutoxu_n.mysqlsync.databinding.ActivityMainBinding
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -42,14 +47,6 @@ class MainActivity : AppCompatActivity(), EditWordDialogFragment.EditDialogInter
                     }
                 }
         }
-        binding.update.setOnLongClickListener {
-            lifecycleScope.launch {
-                withContext(Dispatchers.IO) {
-                    APIAccess.modify()
-                }
-            }
-            true
-        }
         binding.config.setOnClickListener {
             val dialog = RemoteConfigureDialogFragment.newInstance()
             dialog.show(supportFragmentManager, "RemoteConfigureDialog")
@@ -65,7 +62,81 @@ class MainActivity : AppCompatActivity(), EditWordDialogFragment.EditDialogInter
         viewModel.updateWords()
 
         setContentView(binding.root)
+
+        // 同期
+        lifecycleScope.launch {
+             repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                 var cnt = 0L
+                 withContext(Dispatchers.IO) {
+                     while(true) {
+                         // SYNC_INTERVALごとに行う処理
+                         if(cnt >= SYNC_INTERVAL) {
+                             // 同期の実行
+
+                             //アクセス中は表示を0秒に変更
+                             cnt = 0L
+                             withContext(Dispatchers.Main) {
+                                 binding.status.text = getString(
+                                     R.string.status_text,
+                                     if(viewModel.isOnline) "ONLINE" else "OFFLINE",
+                                     0L
+                                 )
+                             }
+
+                             // バージョン比較
+                             val roomVersion = App.pref.getLong(App.KEY_VERSION, 0L)
+                             val mySQLVersion = APIAccess.getVersion()
+                             withContext(Dispatchers.Main) { Toast.makeText(this@MainActivity, "room: $roomVersion, MySQL: $mySQLVersion", Toast.LENGTH_SHORT).show() }
+                             if(mySQLVersion == -1L) {
+                                 withContext(Dispatchers.Main) {
+                                     viewModel.setIsOnline(false)
+                                 }
+
+                             } else if(roomVersion == mySQLVersion) {
+                                 // 変更が必要ない場合
+                                 withContext(Dispatchers.Main) {
+                                     viewModel.setIsOnline(true)
+                                 }
+
+                             } else if(RoomAccess.getModifiesSize() > 0L) {
+                                 // 変更が有ったらサーバーに送信
+                                 if(APIAccess.modify()) {
+                                     // if synced
+                                     withContext(Dispatchers.Main) {
+                                         viewModel.setIsOnline(true)
+                                         viewModel.updateWords()
+                                     }
+
+                                 } else {
+                                     // if sync failed
+                                     withContext(Dispatchers.Main) {
+                                         viewModel.setIsOnline(false)
+                                     }
+                                 }
+                             }
+                         }
+
+                         // INTERVALごとに行う処理
+                         withContext(Dispatchers.Main) {
+                             // update status text
+                             val statusText = binding.status
+                             statusText.text = getString(
+                                 R.string.status_text,
+                                 if(viewModel.isOnline) "ONLINE" else "OFFLINE",
+                                 (SYNC_INTERVAL-cnt)/1000
+                             )
+                             statusText.setBackgroundColor(Color.parseColor(if(viewModel.isOnline) "#adffb0" else "#ffadaf"))
+
+                         }
+
+                         cnt += INTERVAL
+                         delay(INTERVAL)
+                     }
+                 }
+             }
+        }
     }
+
 
     private inner class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
         var parent: View
@@ -102,5 +173,10 @@ class MainActivity : AppCompatActivity(), EditWordDialogFragment.EditDialogInter
     override fun onWordEdited() {
         // 単語が編集されたらRecyclerViewを更新
         viewModel.updateWords()
+    }
+
+    companion object {
+        private const val INTERVAL: Long = 1_000
+        private const val SYNC_INTERVAL: Long = 30_000
     }
 }
