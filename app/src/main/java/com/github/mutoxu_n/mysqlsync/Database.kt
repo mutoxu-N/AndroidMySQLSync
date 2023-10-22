@@ -21,7 +21,7 @@ abstract class Database: RoomDatabase() {
                 val instance = Room.databaseBuilder(
                     App.applicationContext,
                     Database::class.java,
-                    "secretaryDB"
+                    "database_sync"
                 ).build()
                 INSTANCE = instance
                 return instance

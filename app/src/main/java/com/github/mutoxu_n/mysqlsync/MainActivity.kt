@@ -35,12 +35,11 @@ class MainActivity : AppCompatActivity(), EditWordDialogFragment.EditDialogInter
             val dialog = EditWordDialogFragment.newInstance()
             dialog.show(supportFragmentManager, "AddWordDialog")
         }
-        binding.update.setOnClickListener {
+        binding.reset.setOnClickListener {
                 lifecycleScope.launch {
                     withContext(Dispatchers.IO) {
                         try {
-                            APIAccess.modify()
-                            APIAccess.getAll()
+                            RoomAccess.reset()
                             withContext(Dispatchers.Main) { viewModel.updateWords() }
 
                         } catch (e: Exception) { e.printStackTrace() }
@@ -92,13 +91,13 @@ class MainActivity : AppCompatActivity(), EditWordDialogFragment.EditDialogInter
                                      viewModel.setIsOnline(false)
                                  }
 
-                             } else if(roomVersion == mySQLVersion) {
+                             } else if(roomVersion == mySQLVersion && RoomAccess.getModifiesSize() == 0L) {
                                  // 変更が必要ない場合
                                  withContext(Dispatchers.Main) {
                                      viewModel.setIsOnline(true)
                                  }
 
-                             } else if(RoomAccess.getModifiesSize() > 0L) {
+                             } else {
                                  // 変更が有ったらサーバーに送信
                                  if(APIAccess.modify()) {
                                      // if synced

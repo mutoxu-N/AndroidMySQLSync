@@ -68,5 +68,15 @@ class RoomAccess {
             wordDAO.deleteAll()
             wordDAO.insertAll(words)
         }
+
+        fun reset() {
+            val wordDAO = Database.getDatabase().wordDAO()
+            val wordModDAO = Database.getDatabase().wordModDAO()
+            wordDAO.deleteAll()
+            wordModDAO.deleteAll()
+            val editor = App.pref.edit()
+            editor.putLong(App.KEY_VERSION, 0L)
+            editor.apply()
+        }
     }
 }

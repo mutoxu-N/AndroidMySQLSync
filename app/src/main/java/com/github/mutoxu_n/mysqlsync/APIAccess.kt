@@ -1,12 +1,11 @@
 package com.github.mutoxu_n.mysqlsync
 
-import android.net.http.HttpException
 import android.util.Log
 import org.json.JSONArray
 import org.json.JSONObject
-import java.lang.Exception
 import java.net.HttpURLConnection
 import java.net.URL
+import kotlin.Exception
 
 class APIAccess {
     companion object {
@@ -109,8 +108,8 @@ class APIAccess {
         fun modify(): Boolean {
             val wordMods = RoomAccess.getModifies()
             if(wordMods.isEmpty()) {
-                // 更新が無かったらデータの送信を行わない
-                return true
+                // 更新が無かったらデータの受信だけを行う
+                return getAll()
             }
 
             val array = JSONArray()
@@ -123,7 +122,6 @@ class APIAccess {
                 elem.put("type", wordMod.type)
                 array.put(elem)
             }
-            Log.i("APIAccess.kt", "modify json string: $array")
             val body = array.toString().toByteArray()
 
             reloadPreference()
@@ -152,17 +150,16 @@ class APIAccess {
                 RoomAccess.deleteWordMods()
 
                 // MySQLから取得
-                getAll()
-
+                val result = getAll()
                 con.disconnect()
 
+                return result
 
             } catch (e: Exception) {
                 Log.e("APIAccess.kt", "APIサーバーへのアクセスに失敗しました")
                 e.printStackTrace()
                 return false
             }
-            return true
 
         }
     }
